@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('https://i.pinimg.com/736x/d0/7c/13/d07c1371d1e355fabc0d863feebd213f.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+    .container {
+      background: #fff;
+      border-radius: 15px;
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
+    }
+
+    .image-section {
+      flex: 1;
+      background: url('https://i.pinimg.com/736x/22/b4/5d/22b45d2329bd18e2fa1f0a1a1af82804.jpg') no-repeat center;
+      background-size: cover;
+      min-height: 400px;
+    }
+
+    .form-section {
+  flex: 1;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.15); /* transparent white */
+  backdrop-filter: blur(15px);           /* glass blur effect */
+  -webkit-backdrop-filter: blur(15px);   /* for Safari */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .gender-options {
+      display: flex;
+      gap: 15px;
+    }
+
+    .profile-pic {
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .profile-pic img {
+      max-width: 20px;
+      border-radius: 50%;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .terms {
+      margin: 15px 0;
+    }
+
+    .password-strength {
+      font-size: 0.9em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .strength-weak {
+      color: red;
+    }
+
+    .strength-medium {
+      color: orange;
+    }
+
+    .strength-strong {
+      color: green;
+    }
+
+    button {
+      background-color: #6C63FF;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #554cd1;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .image-section {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="image-section"></div>
+
+    <div class="form-section">
+      <h2>Create Account</h2>
+      <form id="registrationForm">
+        <label>Full Name</label>
+        <input type="text" placeholder="First Name" required />
+        <input type="text" placeholder="Last Name" required />
+
+        <label>Email Address</label>
+        <input type="email" placeholder="you@example.com" required />
+
+        <label>Password</label>
+        <input type="password" id="password" required />
+        <div id="strengthMessage" class="password-strength"></div>
+
+        <label>Confirm Password</label>
+        <input type="password" required />
+
+        <label>Date of Birth</label>
+        <input type="date" required />
+
+        <label>Gender</label>
+        <div class="gender-options">
+          <label><input type="radio" name="gender" value="male" required /> Male</label>
+          <label><input type="radio" name="gender" value="female" required /> Female</label>
+          <label><input type="radio" name="gender" value="other" required /> Other</label>
+        </div>
+
+        <label>Upload Profile Picture</label>
+        <input type="file" accept="image/*" id="profilePicInput" class="profile-pic"/>
+        <img id="profilePreview" src="#" alt="" style="display:none;"/>
+
+        <div class="terms">
+          <label><input type="checkbox" required /> I agree to the terms and conditions</label>
+        </div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Password Strength Checker
+    const passwordInput = document.getElementById('password');
+    const strengthMessage = document.getElementById('strengthMessage');
+
+    passwordInput.addEventListener('input', () => {
+      const val = passwordInput.value;
+      let strength = 'Weak';
+      let className = 'strength-weak';
+
+      if (val.length >= 8 && /[A-Z]/.test(val) && /\d/.test(val) && /[\W]/.test(val)) {
+        strength = 'Strong';
+        className = 'strength-strong';
+      } else if (val.length >= 6 && /\d/.test(val) && /[A-Z]/.test(val)) {
+        strength = 'Medium';
+        className = 'strength-medium';
+      }
+
+      strengthMessage.textContent = `Password Strength: ${strength}`;
+      strengthMessage.className = `password-strength ${className}`;
+    });
+
+    // Profile Image Preview
+    const profileInput = document.getElementById('profilePicInput');
+    const profilePreview = document.getElementById('profilePreview');
+
+    profileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        profilePreview.src = URL.createObjectURL(file);
+        profilePreview.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
